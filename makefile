@@ -1,7 +1,7 @@
 #see README for a manual compilation process
 CC = gcc
 CFLAGS = -g
-OBJ = open.o read.o print.o
+OBJ = open.o read.o 
 
 scheduler: $(OBJ) scheduler.c
 	@echo "Creating the scheduler ..."

@@ -31,7 +31,6 @@
 #include <string.h>
 
 #include "scheduler.h"
-#include "print.h"
 #include "open.h"
 #include "read.h"
 
@@ -46,7 +45,7 @@ int main( int argc, char *argv[] )  {
     float cpu_usage;
 
     if (argc == 1 || argc > 4) {
-        printf("Usage: command file_name [FCFS|RR|SRFT] [time_quantum]\n");
+        printf("Usage: command file_name [FCFS|RR|SRFT] [time_quantum]\n\n");
         return 0;
     }
 
@@ -68,11 +67,11 @@ int main( int argc, char *argv[] )  {
     
     printf("Scheduling Policy: %s\n", argv[2]);
 
-    read_file(fp, task_array, &count);
+    read_file(fp, &task_array, &count);
 
     printf("There are %d tasks loaded from \"%s\". Press enter to continue...", count, argv[1]);
     getchar();
-    
+
     printf("==================================================================\n");
 
     // read_file(fp, task_array, &count);
