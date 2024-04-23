@@ -34,23 +34,7 @@
 #include "open.h"
 #include "read.h"
 
-/*
 
-
-* wt[i] =  ( at[i – 1] + bt[i – 1] + wt[i – 1] ) – at[i]
-*
-*   where 
-*       at[i] = arrival time of current process
-*       wt[i] = waiting time of current process 
-*       at[i-1] = arrival time of previous process 
-*       bt[i-1] = burst time of previous process 
-*       wt[i-1] = waiting time of previous process 
-*       at[i] = arrival time of current process
-*
-* Average Waiting Time = (sum of all waiting time)/(Number of processes) 
-
-
-*/
 
 /* 
  * First Come First Serve (FCFS) Policy
@@ -69,12 +53,15 @@ float fcfs_policy(task_t task_array[], u_int count) {
             task_array[i].start_time = time; // Set start time to be the current time value on excecution.
             i++;
         }
-        else if(task_array[i].arrival_time <= time){
+        else if(task_array[i].arrival_time <= time){ // If the arrival time is less than the current time, execute the process.
             printf("<time %i> process %i is running\n", time, task_array[i].pid);
+            if(task_array[i].start_time == -1){
+                task_array[i].start_time = time;
+            }
             task_array[i].remaining_time--;
             time++;
         }
-        else{
+        else{ // If the arrival time is greater than the current time, idle.
             printf("<time %i> idle...\n", time);
             time++;
             idle_t++;
@@ -83,7 +70,7 @@ float fcfs_policy(task_t task_array[], u_int count) {
 
     }
 
-    printf("<time %i> all processes are finished\n", time);
+    printf("<time %i> all processes are finished...\n", time);
 
     if(time == 0) {
         return 0;
@@ -91,7 +78,48 @@ float fcfs_policy(task_t task_array[], u_int count) {
         return (float)(time - idle_t)/time;
     }
 
-    return 0.0;
+   
+}
+
+/*
+
+
+* wt[i] =  ( at[i – 1] + bt[i – 1] + wt[i – 1] ) – at[i]
+*
+*   where 
+*       at[i] = arrival time of current process
+*       wt[i] = waiting time of current process 
+*       at[i-1] = arrival time of previous process 
+*       bt[i-1] = burst time of previous process 
+*       wt[i-1] = waiting time of previous process 
+*       at[i] = arrival time of current process
+*
+* Average Waiting Time = (sum of all waiting time)/(Number of processes) 
+
+
+*/
+void stats(task_t task_list[], int size, float cpu_usage) {
+    float wt = 0, rt = 0, trnt = 0;
+    int i;
+    for (i = 0; i < size; i++) {
+        wt += (float)((task_list[i].arrival_time + task_list[i].burst_time + wt) - task_list[i].arrival_time);
+        
+        trnt += (float)(task_list[i].finish_time - task_list[i].arrival_time);
+        // printf("wt: %f\n", wt);
+
+        
+    }
+    wt = (size != 0) ? wt / (float)size : 0;
+    trnt = (size != 0) ? (trnt / (float)size) : 0;
+
+
+    printf("==================================================================\n");
+    printf("Average waiting time:    %.2f\n", wt);
+    printf("Average response time:   %.2f\n", rt);
+    printf("Average turnaround time: %.2f\n", trnt);
+    printf("Overall CPU usage:       %5.2f%%\n", cpu_usage * 100);
+    printf("==================================================================\n");
+
 }
 
 int main( int argc, char *argv[] )  {
@@ -147,7 +175,8 @@ int main( int argc, char *argv[] )  {
         return EXIT_FAILURE;
     }
 
-   
+    stats(task_array, count, cpu_usage);
+
     fclose(fp);
     return EXIT_SUCCESS;
 }
