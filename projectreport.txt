@@ -1,0 +1,97 @@
+Project 5 Report
+Tyler Teufel
+
+Designing and implementing this project proved to be a rigorious task in its entirety.
+The process of deciding how exactly to separate all of the different moving parts was a major step
+in itself, one that I had to really consider while going through the beginning steps.
+
+(1) Firstly, I separated the scheduling mechanism from the scheduling policies using a series of
+methods that kept each individual policy's logic confined to its own function, with logic deciding
+which is to be utilized living in the main function.
+
+(2) For FCFS, I took in as parameters an array of the tasks, as well as an integer value for the number
+of tasks in that list. From here, I created 3 local variables- 'i', for iterating the loop, 'time', for 
+keeping track of the actual time as it iterates for each process, and finally 'idle_t', which I created
+in order to represent the possible state in which a process has not arrived and a process also is not 
+currently running. From here, we enter into a while loop that runs over the range of the number of tasks,
+as per the 'count' parameter passed in. Next, we reach a series of conditionals that determine which 
+state we are to enter at that time interval, within which we print the appropriate status. In the case
+that a process is already running upon entering this iteration, we first check if the remaining_time
+is equal to zero, such that we can move to the next process and inform the user that the process is
+complete. If not, we check next if the arrival time of the current process being looked at is less
+than the current time iteration- which would indicate that this process has infact arrived and can begin.
+Finally, if neither condition holds true, we assume no process is running nor present thus determining
+that the cpu must be idle. This continues until all processes have been completed.
+
+For SRTF, the whole idea surrounding this algorithm is to execute the shortest timed process up to that
+point of time when ready to execute a new process. I implemented this by first passing in the same 
+parameters as FCFS, and then creating 5 local variables, 'time', for tracking the time interval, 'i' 
+for tracking a loop, 'j' for tracking another loop, 'finished' for counting finished processes, and 
+'idle_t' to once again track the amount of time spent idle. First, we enter a while loop which will run
+for as long as the amount of finished processes is less than the amount of processes that need to be
+completed. Immediately within this loop, we declare a couple of local variables for tracking the "shortest"
+index, as well as the shortest remaining time for a process. We declare this within the loop so that they
+reset each iteration, helping us to simulate the dynamic analysis of each process across a sliding window
+sort of look at certain processes based on arrival times. Next, we find that each iteration will also 
+begin by identifying which process in the array has the shortest remaining time as per the algorithm rules.
+Next, we reach a conditional to check if there are any processes available to execute given the time- meaning
+we must account for the fact that processes could have not arrived at this time while nothing is being executed.
+Next, assuming we pass the previous conditional without continuing to the next iteration, we can start
+to execute the process. Finally, before moving on to the next iteration, we must check to see if this process
+has finished executing- or if it still needs to continue to run with the next time iteration. If finished,
+we alert the user and iterate finished. This continues until the while condition surpassed, which then will
+return
+
+Finally, for RR, we once again take in the same two initial parameters, along with another integer parameter,
+quantum. The idea surrounding the RR algorithm, is that based upon the inputted quantum, each process is
+equally allotted that amount of execution time each go around, in a queue format, until every process is complete.
+The implementation I used begins by declaring a handful of local variables, firstly the 5 previous example's
+local variables, 'time', for tracking the time interval, 'i' for tracking a loop, 'j' for tracking another loop, 
+'finished' for counting finished processes, and 'idle_t' to once again track the amount of time spent idle. 
+The other local variables are more specific to this implementation, 'process_queue', which is an array that
+will act as a queue in this instance, and two integers, 'front' and 'rear', that will help represent the front
+and end indexes of the queue. Next, we enter a familiar while loop, that will continue to iterate until all 
+processes are effectively marked as finished as in the second policy. Immediately within this while loop,
+we find another nested while loop, that is used to locate and add all processes that are less than or equal
+to the current time interval to the queue. From here, we check if the queue has elements in it by comparing
+the front index to the rear index. If there is no process running and non waiting to run, we mark it as idle 
+and move on. Next, we reach another familiar conditional, in which we check to see if in the case that process 
+is already running, if it is finished. If this condition is true, we enter the conditional and update the queue, 
+else, we check where we are on time in comparison to the quantum, which will determine whether or not we
+continue with this process or move on. As with SRTF, we continue through this loop until all processes have 
+finished, effectively splitting up the execution of these processes in a fair manner.
+
+(3) The waiting times were calculated by taking the sum of the previous process's arrival time, waiting time,
+ and burst time, and subtracting the current arrival time. This was found based upon our notes and research I 
+ conducted- mainly using geeksforgeeks.com as an explaination. The average was the sum of these divided by 
+ the count of the processes.
+
+ (4) The response times were calculated the arrival time from the start time of each process. The average 
+ was then calculated by taking the sum of the response times divided by the count of processes.
+
+ (5) The turnaround times were calculated by taking the finish time and subtracting the the arrival time. 
+ The average was then calculated by taking the sum of the turnaround times divided by the count of processes.
+
+ (6) I implemented the command-line parser by checking the arguments based on there placement in the space seperated line,
+ which is turned into an array of arguments. From here, I decided what direction I would continue based on conditionals
+ that would analyze the policy arguments provided, as well as if enough arguments were given, and valid ones at that.
+
+ (7) The solution is general enough that it can take a variety of inputs and choose how to correctly schedule them;
+ more specifically meaning, that this solution is not limited to just the given input values. 
+
+ (8) Adding in a new scheduling policy into the scheduler would be a fairly straight forward process, assuming the same
+ data types are utilized. All that would need to be done is a method would need to be created for that policy, and
+ the parser conditionals would need to be updated in order to account for the new policy.|
+
+ (9) My programn does offer input error checking, where it can list a file as invalid, and a command line argument as incorrect.
+
+ (10) The code is now certainly readable, though I did go back through and clean it up a ton as I had a lot of commented out segments of code.
+
+ (11) The solution is definitely straightforward in that it follows each algorithm correctly, however I did need to get creative in order
+ to account for the fact that arrays in c are not a dynamic data type. Through this, I simulated the usage of a queue using an array,
+ and also simulated the sorting of arrays through swap logic that involved creating a new array, populating it as a copy, and then
+ looping through to sort it based upon my criteria. This proved to be a large challenge that took me extensive amounts of time to accomplish,
+ however I do feel that I did so in an effective manner.
+
+ (12) All outside sources utilized consisted of stack overflow, geeksforgeeks.com, syntax explaination + brainstorming with chatGPT,
+ and using the notes we have on canvas.

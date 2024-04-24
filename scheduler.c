@@ -88,7 +88,7 @@ float fcfs_policy(task_t task_array[], u_int count) {
  * The process with the smallest amount of time remaining until completion is selected to execute.
  * If a new process arrives with a shorter amount of time remaining than the current executing process, the current process is preempted.
 */
-float srft_policy(task_t task_array[], u_int count) {
+float srtf_policy(task_t task_array[], u_int count) {
     
     int time = 0, i = 0, j=0, finished = 0, idle_t = 0;
 
@@ -260,7 +260,7 @@ int main( int argc, char *argv[] )  {
     float cpu_usage;
 
     if (argc == 1 || argc > 4) {
-        printf("Usage: command file_name [FCFS|RR|SRFT] [time_quantum]\n\n");
+        printf("Usage: command file_name [FCFS|RR|srtf] [time_quantum]\n\n");
         return 0;
     }
 
@@ -295,7 +295,7 @@ int main( int argc, char *argv[] )  {
         cpu_usage = rr_policy(task_array, count, atoi(argv[3]));
         printf("RR Policy\n");
     } else if (strcmp(argv[2], "SRFT") == 0) {
-        cpu_usage = srft_policy(task_array, count);
+        cpu_usage = srtf_policy(task_array, count);
         
     } else {
         printf("Invalid scheduling policy: %s\n", argv[2]);
