@@ -245,37 +245,10 @@ void stats(task_t task_list[], int size, float cpu_usage) {
 
 }
 
-// void swap(task_t* xp, task_t* yp) 
-// { 
-//     task_t temp = *xp; 
-//     *xp = *yp; 
-//     *yp = temp; 
-// }
 
-// void selectionSort(task_t task_array[], u_int count) 
-// { 
-//     int i, j, min_idx; 
-  
-//     // One by one move boundary of unsorted subarray int
-//     for (i = 0; i < count-1; i++) 
-//     { 
-//         // Find the minimum element in unsorted array 
-//         min_idx = i; 
-//         for (j = i+1; j < count; j++) {
-//           if (task_array[j].arrival_time < task_array[min_idx].arrival_time) {
-
-//             min_idx = j; 
-//           }
-
-//         } 
-//         printf("task_array[%i]: %i\n", i, task_array[i].arrival_time);
-//         // Swap the found minimum element with the first element 
-//         swap(&task_array[min_idx], &task_array[i]); 
-
-//         printf("task_array[%i]: %i\n", i, task_array[i].arrival_time);
-//     } 
-// }
-
+/* 
+ * Main function for executing the actual scheduling.
+*/
 int main( int argc, char *argv[] )  {
     char *file_name; /* file name from the commandline */
     FILE *fp; /* file descriptor */
